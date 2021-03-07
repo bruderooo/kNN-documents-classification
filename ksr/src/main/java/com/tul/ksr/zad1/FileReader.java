@@ -1,7 +1,5 @@
 package com.tul.ksr.zad1;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.collections4.ListUtils;
 
 import java.io.File;
@@ -13,8 +11,15 @@ import java.util.Scanner;
 
 public class FileReader {
 
-    public static void castAllStringsToXML(List<String> strings) {
 
+    public static List<Object> castStringsToArticles(List<String> stringsReuters) {
+        List<Object> reuters = new ArrayList<>();
+
+        for (String strReuter : stringsReuters) {
+
+        }
+
+        return reuters;
     }
 
     /** Klasa odpowiedzialna za zwrócenie listy wszystkich plików w danym katalogu
