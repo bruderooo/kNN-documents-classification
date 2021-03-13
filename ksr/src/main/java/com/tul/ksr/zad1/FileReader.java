@@ -5,10 +5,7 @@ import org.apache.commons.collections4.ListUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class FileReader {
 
@@ -40,7 +37,7 @@ public class FileReader {
         return list;
     }
 
-    // Zwraca liste wszystkich routersów jako
+    // Zwraca liste wszystkich routersów
     public static List<String> getAllRouters(List<String> allFilesPath) throws FileNotFoundException {
         // Lista Reutersów
         List<String> allReuters = new ArrayList<>();
@@ -50,7 +47,8 @@ public class FileReader {
 
             if (file.isFile()) {
                 //  Łączenie dwóch liczb ;3
-                List<String> tmp = Arrays.asList(readFile(file).split("(?=(<REUTERS))"));
+                List<String> tmp = new LinkedList<>(Arrays.asList(readFile(file).split("(?=(<REUTERS))")));
+
                 tmp.remove(0);
 
                 allReuters = ListUtils.union(allReuters, tmp);
