@@ -8,32 +8,16 @@ import java.util.List;
 
 public class Article {
 
-    private Date postDate;
-    private String topic;
     private List<String> places;
-    private List<String> people;
-    private String author;
-    private String title;
     private List<String> textBody;
 
 //    private featuresVector;
 
     public Article(String reuter) throws ParseException {
-        // Zgarnianie daty
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SS");
-        this.postDate = formatter.parse(extractTextFromXmlTags(reuter, "DATE"));
-
-        this.topic = extractTextFromXmlTags(reuter, "TOPICS");
-
         // Places są dodatkowo wypisane w tagu <D>
         this.places = extractListFromPlacesOrPeople(reuter, "PLACES");
 
-        // W pierwszej kolejności extraktuje wszystko z pomiędzy tagu <PLACES>,
-        // a następnie bierze i dzieli na liste, w tagach <D>
-        this.people = extractListFromPlacesOrPeople(reuter, "PEOPLE");
-
-        this.author = clearString(extractTextFromXmlTags(reuter, "AUTHOR"));
-        this.title = extractTextFromXmlTags(reuter, "TITLE");
+        // Exstrakcja textu z body
         this.textBody = clearAndCastStringToList(extractTextFromXmlTags(reuter, "BODY"));
     }
 
