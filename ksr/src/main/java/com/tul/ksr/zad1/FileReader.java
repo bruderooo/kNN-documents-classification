@@ -4,6 +4,7 @@ import org.apache.commons.collections4.ListUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.Scanner;
 public class FileReader {
 
 
-    public static List<Object> castStringsToArticles(List<String> stringsReuters) {
-        List<Object> reuters = new ArrayList<>();
+    public static List<Article> castStringsToArticles(List<String> stringsReuters) throws ParseException {
+        List<Article> reuters = new ArrayList<>();
 
         for (String strReuter : stringsReuters) {
-
+            reuters.add(new Article(strReuter));
         }
 
         return reuters;

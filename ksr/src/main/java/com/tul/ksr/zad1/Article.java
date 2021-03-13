@@ -1,5 +1,7 @@
 package com.tul.ksr.zad1;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -11,42 +13,52 @@ public class Article {
     private List<String> places;
     private List<String> people;
     private String author;
-    private List<String> title;
+    private String title;
     private List<String> textBody;
 
-    public Article(String reuter) {
-        // Dla postdate trzeba wziąć wyciągnąć date z stringa
-        this.postDate = extractTextFromXmlTags("DATE");
-        this.topic = extractTextFromXmlTags("TOPICS");
+//    private featuresVector;
+
+    public Article(String reuter) throws ParseException {
+        // Zgarnianie daty
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SS");
+        this.postDate = formatter.parse(extractTextFromXmlTags(reuter, "DATE"));
+
+        this.topic = extractTextFromXmlTags(reuter, "TOPICS");
 
         // Places są dodatkowo wypisane w tagu <D>
-        this.places = extractTextFromXmlTags("PLACES");
+        this.places = extractListFromPlacesOrPeople(reuter, "PLACES");
 
-        // Tak samo jak places wyżej ;/ ale na luzaku do zrobienia
-        this.people = extractTextFromXmlTags("PEOPLE");
-        this.author = clearString(extractTextFromXmlTags("AUTHOR"));
-        this.title = clearAndCastStringToList(extractTextFromXmlTags("TITLE"));
-        this.textBody = clearAndCastStringToList(extractTextFromXmlTags("BODY"));
+        // W pierwszej kolejności extraktuje wszystko z pomiędzy tagu <PLACES>,
+        // a następnie bierze i dzieli na liste, w tagach <D>
+        this.people = extractListFromPlacesOrPeople(reuter, "PEOPLE");
+
+        this.author = clearString(extractTextFromXmlTags(reuter, "AUTHOR"));
+        this.title = extractTextFromXmlTags(reuter, "TITLE");
+        this.textBody = clearAndCastStringToList(extractTextFromXmlTags(reuter, "BODY"));
     }
 
-    public String extractTextFromXmlTags(String tag) {
+    private List<String> extractListFromPlacesOrPeople(String reuter, String mainTag) {
+        return Arrays.asList(extractTextFromXmlTags(reuter, mainTag).split("(?=(<D))"));
+    }
+
+    private String extractTextFromXmlTags(String text, String tag) {
         int tagBegin, tagEnd;
 
-        tagBegin = tag.indexOf("<" + tag + ">");
-        tagEnd = tag.indexOf("</" + tag + ">");
+        tagBegin = text.indexOf("<" + tag + ">") + ("<" + tag + ">").length();
+        tagEnd = text.indexOf("</" + tag + ">");
 
         if (tagBegin == -1 || tagEnd == -1) {
             return "";
         } else {
-            return tag.substring(tagBegin, tagEnd);
+            return text.substring(tagBegin, tagEnd);
         }
     }
 
-    public List<String> clearAndCastStringToList(String dirtyString) {
+    private List<String> clearAndCastStringToList(String dirtyString) {
         return Arrays.asList(clearBodyText(dirtyString).split("\\s+"));
     }
 
-    public String clearString(String dirtString) {
+    private String clearString(String dirtString) {
         return dirtString
                 .replace("\n", " ")
                 .replace("\t", " ")
@@ -59,7 +71,7 @@ public class Article {
                 .toLowerCase();
     }
 
-    public String clearBodyText(String dirtyString) {
+    private String clearBodyText(String dirtyString) {
         return clearString(dirtyString)
                 .replace("&lt;", " ").replace("&gt;", "")
                 .replace("<", " ").replace(">", "")
