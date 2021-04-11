@@ -1,8 +1,8 @@
 package com.tul.ksr.zad1.model;
 
-import lombok.ToString;
+import lombok.Data;
 
-@ToString
+@Data
 public class Features {
     int articleLength;
     int numberOfWords;
