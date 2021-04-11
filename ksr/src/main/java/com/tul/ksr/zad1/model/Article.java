@@ -9,11 +9,13 @@ import java.util.List;
 public class Article {
 
     private final List<String> places;
-    private final List<String> textBody;
+    private final List<String> wordList;
+    private int initArticleLen;
     private Features features;
 
-    public Article(List<String> places, List<String> textBody) {
+    public Article(List<String> places, List<String> wordList, int initArticleLen) {
         this.places = places;
-        this.textBody = textBody;
+        this.wordList = wordList;
+        this.initArticleLen = initArticleLen;
     }
 }

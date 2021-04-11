@@ -10,7 +10,6 @@ import java.util.*;
 
 public class FileReader {
 
-
     public static List<Article> castStringsToArticles(List<String> stringsReuters) throws ParseException {
         List<Article> reuters = new ArrayList<>();
 

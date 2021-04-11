@@ -23,7 +23,7 @@ public class KsrZad1 {
         // a następnie dla tych co zostaną wyekstraktowac cechy.
         List<Article> onePlacesArticles = new ArrayList<>(articles);
         for (Article article : articles) {
-            if (!ArticleBuilder.isNumberOfPlacesEqualA(article, 1)) {
+            if (!Extractor.isNumberOfPlacesEqualA(article, 1)) {
                 onePlacesArticles.remove(article);
             }
         }
@@ -33,10 +33,10 @@ public class KsrZad1 {
 
         // Ekstrakcja cech
         for (Article a : articles) {
-            ArticleBuilder.extractAndSetFeatures(a);
+            Extractor.extractAndSetFeatures(a);
         }
 
-        // Tak z ciekawości wyświetlam sobie 10 artykuł żeby zobaczyć co tam się udało
+        // Tak z ciekawości wyświetlam sobie 15 artykuł żeby zobaczyć co tam się udało
         // wyekstraktować
         System.out.println(articles.get(15));
     }

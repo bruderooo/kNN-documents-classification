@@ -4,24 +4,29 @@ import lombok.ToString;
 
 @ToString
 public class Features {
-
-    int noWords;
+    int articleLength;
+    int numberOfWords;
+    String longestWord;
     int lengthOfLongestWord;
-    String mostPopularCurrency;
-    String secondPopularCurrency;
-    String mostPopularCountry;
-    String secondPopularCountry;
-    int noDigits;
+    String mostCommonCurrency;
+    String secondCommonCurrency;
+    String mostCommonCountry;
+    String secondCommonCountry;
+    int avgWordLength;
+    int wordShortThanFive;
 
-    public Features(int noWords, int lengthOfLongestWord, String mostPopularCurrency,
-                    String secondPopularCurrency, String mostPopularCountry, String secondPopularCountry,
-                    int noDigits) {
-        this.noWords = noWords;
+    public Features(int articleLength, int numberOfWords, String longestWord, int lengthOfLongestWord,
+                    String mostCommonCurrency, String secondCommonCurrency, String mostCommonCountry,
+                    String secondCommonCountry, int avgWordLength, int wordShortThanFive) {
+        this.articleLength = articleLength;
+        this.numberOfWords = numberOfWords;
+        this.longestWord = longestWord;
         this.lengthOfLongestWord = lengthOfLongestWord;
-        this.mostPopularCurrency = mostPopularCurrency;
-        this.secondPopularCurrency = secondPopularCurrency;
-        this.mostPopularCountry = mostPopularCountry;
-        this.secondPopularCountry = secondPopularCountry;
-        this.noDigits = noDigits;
+        this.mostCommonCurrency = mostCommonCurrency;
+        this.secondCommonCurrency = secondCommonCurrency;
+        this.mostCommonCountry = mostCommonCountry;
+        this.secondCommonCountry = secondCommonCountry;
+        this.avgWordLength = avgWordLength;
+        this.wordShortThanFive = wordShortThanFive;
     }
 }
