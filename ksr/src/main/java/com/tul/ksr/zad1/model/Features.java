@@ -1,4 +1,4 @@
-package com.tul.ksr.zad1;
+package com.tul.ksr.zad1.model;
 
 import lombok.ToString;
 

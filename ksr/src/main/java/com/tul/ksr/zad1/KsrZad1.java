@@ -1,6 +1,8 @@
 package com.tul.ksr.zad1;
 
 
+import com.tul.ksr.zad1.model.Article;
+
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class KsrZad1 {
         // a następnie dla tych co zostaną wyekstraktowac cechy.
         List<Article> onePlacesArticles = new ArrayList<>(articles);
         for (Article article : articles) {
-            if (!article.isNumberOfPlacesEqualA(1)) {
+            if (!ArticleBuilder.isNumberOfPlacesEqualA(article, 1)) {
                 onePlacesArticles.remove(article);
             }
         }
@@ -31,7 +33,7 @@ public class KsrZad1 {
 
         // Ekstrakcja cech
         for (Article a : articles) {
-            a.extractAndSetFeatures();
+            ArticleBuilder.extractAndSetFeatures(a);
         }
 
         // Tak z ciekawości wyświetlam sobie 10 artykuł żeby zobaczyć co tam się udało

@@ -1,8 +1,8 @@
 package com.tul.ksr.zad1;
 
-import lombok.ToString;
+import com.tul.ksr.zad1.model.Article;
+import com.tul.ksr.zad1.model.Features;
 
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,21 +12,17 @@ import static com.tul.ksr.zad1.MapUtil.sortByValue;
 import static com.tul.ksr.zad1.StaticLists.COUNTRIES_LIST;
 import static com.tul.ksr.zad1.StaticLists.CURRENCY_LIST;
 
-@ToString
-public class Article {
-
-    private final List<String> places;
-    private final List<String> textBody;
-    private Features features;
-
-    public Article(String reuter) throws ParseException {
-        this.places = extractPlaces(reuter);
+public class ArticleBuilder {
+    public static Article buildArticle(String reuter) {
+        List<String> places = extractPlaces(reuter);
 
         // Exstrakcja textu z body
-        this.textBody = clearAndCastStringToList(extractTextFromXmlTags(reuter, "BODY"));
+        List<String> wordsList = clearAndCastStringToList(extractTextFromXmlTags(reuter, "BODY"));
+
+        return new Article(places, wordsList);
     }
 
-    private List<String> extractPlaces(String reuter) {
+    private static List<String> extractPlaces(String reuter) {
         List<String> placesWithoutD = Arrays.asList(extractTextFromXmlTags(reuter, "PLACES").split("(?=(<D))"));
 
         for (int i = 0; i < placesWithoutD.size(); i++) {
@@ -36,7 +32,7 @@ public class Article {
         return placesWithoutD;
     }
 
-    private String extractTextFromXmlTags(String text, String tag) {
+    private static String extractTextFromXmlTags(String text, String tag) {
         int tagBegin, tagEnd;
 
         tagBegin = text.indexOf("<" + tag + ">") + ("<" + tag + ">").length();
@@ -49,11 +45,11 @@ public class Article {
         }
     }
 
-    private List<String> clearAndCastStringToList(String dirtyString) {
+    private static List<String> clearAndCastStringToList(String dirtyString) {
         return Arrays.asList(clearBodyText(dirtyString).split("\\s+"));
     }
 
-    private String clearBodyText(String dirtyString) {
+    private static String clearBodyText(String dirtyString) {
         return dirtyString
                 .replace("\n", " ").replace("\t", " ")
                 .replace("&#2;", " ").replace("&#3;", " ")
@@ -72,9 +68,9 @@ public class Article {
                 .replace("!", "");
     }
 
-    public void extractAndSetFeatures() {
+    public static void extractAndSetFeatures(Article article) {
         // Cecha 1: ilość słów; działa
-        int noWords = textBody.size();
+        int noWords = article.getTextBody().size();
 
         int noDigits = 0;
         int longestWordLen = 0;
@@ -82,7 +78,7 @@ public class Article {
         Map<String, Integer> countryOccurency = new LinkedHashMap<>();
         Map<String, Integer> currencyOccurency = new LinkedHashMap<>();
 
-        for (String word : textBody) {
+        for (String word : article.getTextBody()) {
             // Cecha 2: najdłuższe słowo; działa
             if (word.length() > longestWordLen) {
                 longestWordLen = word.length();
@@ -133,13 +129,13 @@ public class Article {
         }
         //</editor-fold>
 
-        features = new Features(
+        article.setFeatures(new Features(
                 noWords, longestWordLen, mostPopularCurrency,
                 secondPopularCurrency, mostPopularCountry, secondPopularCountry,
-                noDigits);
+                noDigits));
     }
 
-    private Map<String, Integer> updateMapsWithOccurrences(Map<String, Integer> wordOccurrence, String word, List<String> staticWordsList) {
+    private static Map<String, Integer> updateMapsWithOccurrences(Map<String, Integer> wordOccurrence, String word, List<String> staticWordsList) {
         Map<String, Integer> newMap = new LinkedHashMap<>(wordOccurrence);
 
         for (String staticWord : staticWordsList) {
@@ -157,7 +153,7 @@ public class Article {
         return newMap;
     }
 
-    public boolean isNumberOfPlacesEqualA(int A) {
-        return places.size() == A;
+    public static boolean isNumberOfPlacesEqualA(Article article, int A) {
+        return article.getPlaces().size() == A;
     }
 }

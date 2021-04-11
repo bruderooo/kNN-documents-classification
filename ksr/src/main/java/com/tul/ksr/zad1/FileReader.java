@@ -1,5 +1,6 @@
 package com.tul.ksr.zad1;
 
+import com.tul.ksr.zad1.model.Article;
 import org.apache.commons.collections4.ListUtils;
 
 import java.io.File;
@@ -14,7 +15,7 @@ public class FileReader {
         List<Article> reuters = new ArrayList<>();
 
         for (String strReuter : stringsReuters) {
-            reuters.add(new Article(strReuter));
+            reuters.add(ArticleBuilder.buildArticle(strReuter));
         }
 
         return reuters;
