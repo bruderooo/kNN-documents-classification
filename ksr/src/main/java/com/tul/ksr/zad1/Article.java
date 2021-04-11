@@ -73,7 +73,7 @@ public class Article {
     }
 
     public void extractAndSetFeatures() {
-        // Cecha 1: ilość słów
+        // Cecha 1: ilość słów; działa
         int noWords = textBody.size();
 
         int noDigits = 0;
@@ -83,7 +83,7 @@ public class Article {
         Map<String, Integer> currencyOccurency = new LinkedHashMap<>();
 
         for (String word : textBody) {
-            // Cecha 2: najdłuższe słowo
+            // Cecha 2: najdłuższe słowo; działa
             if (word.length() > longestWordLen) {
                 longestWordLen = word.length();
             }
@@ -101,7 +101,7 @@ public class Article {
             //</editor-fold>
 
 
-            // Cecha 7: ilość cyfr
+            // Cecha 7: ilość cyfr; działa
             if (word.matches(".*\\d.*")) {
                 noDigits++;
             }

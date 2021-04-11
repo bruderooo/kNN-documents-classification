@@ -26,6 +26,7 @@ public class KsrZad1 {
             }
         }
 
+        // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
         articles = onePlacesArticles;
 
         // Ekstrakcja cech
@@ -35,6 +36,6 @@ public class KsrZad1 {
 
         // Tak z ciekawości wyświetlam sobie 10 artykuł żeby zobaczyć co tam się udało
         // wyekstraktować
-        System.out.println(articles.get(12));
+        System.out.println(articles.get(15));
     }
 }
