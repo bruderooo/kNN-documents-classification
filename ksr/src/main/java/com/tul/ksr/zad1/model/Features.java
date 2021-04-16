@@ -12,7 +12,7 @@ public class Features {
     String secondCommonCurrency;
     String mostCommonCountry;
     String secondCommonCountry;
-    int avgWordLength;
+    double avgWordLength;
     int wordShortThanFive;
 
     public Features(int articleLength, int numberOfWords, String longestWord, int lengthOfLongestWord,

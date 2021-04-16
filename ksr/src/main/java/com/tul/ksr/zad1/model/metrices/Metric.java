@@ -3,7 +3,7 @@ package com.tul.ksr.zad1.model.metrices;
 import com.tul.ksr.zad1.model.Article;
 
 public abstract class Metric {
-    double distanceTo(Article article1, Article article2) {
+    public double distanceTo(Article article1, Article article2) {
         return 0;
     }
 

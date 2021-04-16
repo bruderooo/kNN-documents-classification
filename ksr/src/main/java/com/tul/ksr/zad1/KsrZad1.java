@@ -36,6 +36,10 @@ public class KsrZad1 {
             Extractor.extractAndSetFeatures(a);
         }
 
-        System.out.println("Poprawność klasyfikacji 67.64%");
+        System.out.println(articles.get(10));
+        System.out.println(articles.get(80));
+        System.out.println(articles.get(110));
+        System.out.println(articles.get(160));
+        System.out.println(articles.get(200));
     }
 }
