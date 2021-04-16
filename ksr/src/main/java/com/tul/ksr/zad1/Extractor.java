@@ -46,18 +46,18 @@ public class Extractor {
                 .replace("\n", " ").replace("\t", " ")
                 .replace("&#2;", " ").replace("&#3;", " ")
                 .replace("&#5;", " ").replace("&#27;", " ")
-                .replace("&lt;", "").replace("&gt;", "")
-                .replace("<", " ").replace(">", "")
-                .replace(",", "").replace(".", " ")
-                .replace(";", "").replace(":", "")
-                .replace("'", " ").replace("\"", "")
-                .replace("(", "").replace(")", "")
-                .replace("[", "").replace("]", "")
-                .replace("+", "").replace("=", "")
-                .replace("*", "").replace(" - ", " ")
-                .replace(" -- ", " ").replace("Reuter", "")
-                .replace("/", " ").replace("?", "")
-                .replace("!", "").toLowerCase();
+                .replace("&lt;", " ").replace("&gt;", " ")
+                .replace("<", " ").replace(">", " ")
+                .replace(",", " ").replace(".", " ")
+                .replace(";", " ").replace(":", " ")
+                .replace("'", " ").replace("\"", " ")
+                .replace("(", " ").replace(")", " ")
+                .replace("[", " ").replace("]", " ")
+                .replace("+", " ").replace("=", " ")
+                .replace("*", " ").replace(" - ", " ")
+                .replace(" -- ", " ").replace("Reuter", " ")
+                .replace("/", " ").replace("?", " ")
+                .replace("!", " ").toLowerCase();
     }
 
     public static void extractAndSetFeatures(Article article) {
@@ -76,7 +76,7 @@ public class Extractor {
         // Cecha 4: długość tego słowa
         String longestWord = "";
 
-        int sumLen = 0;
+        double sumLen = 0.0;
 
         // Cecha 10: ilość słów krótszych niż średnia długość słów w języku angielskim
         int numberOfShortWords = 0;
@@ -119,43 +119,32 @@ public class Extractor {
 
         // Tu sortuje mape po wartościach, a następnie bierze pierwsze dwa klucze
         // czyli dwa najczęściej pojawiające się kraje
-        Map<String, Integer> map;
-        Iterator<Map.Entry<String, Integer>> entry;
-        Map.Entry<String, Integer> next;
-        int checkInteger;
-
         // sprawdzanie dla waluty
-        map = sortByValue(currencyMap);
-        entry = map.entrySet().iterator();
-        next = entry.next();
-        String mostCommonCurrency = next.getKey();
-        checkInteger = next.getValue();
-        String secondCommonCurrency = entry.next().getKey();
-        if (checkInteger == 0) {
-            mostCommonCurrency = "";
-            secondCommonCurrency = "";
-        }
-
+        String[] commonsCurrencies = getMostAndSecondCommonValues(currencyMap);
         // sprawdzanie dla kraju
-        map = sortByValue(countryMap);
-        entry = map.entrySet().iterator();
-        next = entry.next();
-        String mostCommonCountry = next.getKey();
-        checkInteger = next.getValue();
-        String secondCommonCountry = entry.next().getKey();
-
-        if (checkInteger == 0) {
-            mostCommonCountry = "";
-            secondCommonCountry = "";
-        }
-
+        String[] commonsCountries = getMostAndSecondCommonValues(countryMap);
 
         Features features = new Features(articleLen,
-                noWords, longestWord, longestWord.length(), mostCommonCurrency,
-                secondCommonCurrency, mostCommonCountry, secondCommonCountry,
+                noWords, longestWord, longestWord.length(), commonsCurrencies[0],
+                commonsCurrencies[1], commonsCountries[0], commonsCountries[1],
                 sumLen / noWords, numberOfShortWords);
 
         article.setFeatures(features);
+    }
+
+    private static String[] getMostAndSecondCommonValues(Map<String, Integer> map) {
+        map = sortByValue(map);
+        Iterator<Map.Entry<String, Integer>> entry = map.entrySet().iterator();
+        Map.Entry<String, Integer> next = entry.next();
+        String mostCommonKey = next.getKey();
+        Integer checkInteger = next.getValue();
+        String secondCommonKey = entry.next().getKey();
+
+        if (checkInteger == 0) {
+            mostCommonKey = "";
+            secondCommonKey = "";
+        }
+        return new String[]{mostCommonKey, secondCommonKey};
     }
 
     public static boolean isNumberOfPlacesEqualA(Article article, int A) {

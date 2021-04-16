@@ -36,10 +36,13 @@ public class KsrZad1 {
             Extractor.extractAndSetFeatures(a);
         }
 
-        System.out.println(articles.get(10));
-        System.out.println(articles.get(80));
-        System.out.println(articles.get(110));
-        System.out.println(articles.get(160));
-        System.out.println(articles.get(200));
+        System.out.println(articles.get(1));
+        System.out.println(articles.get(2));
+        System.out.println(articles.get(3));
+        System.out.println(articles.get(4));
+//        System.out.println(articles.get(80));
+//        System.out.println(articles.get(110));
+//        System.out.println(articles.get(160));
+//        System.out.println(articles.get(200));
     }
 }
