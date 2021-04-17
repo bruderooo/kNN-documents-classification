@@ -122,6 +122,8 @@ public class Extractor {
         // sprawdzanie dla waluty
         String[] commonsCurrencies = getMostAndSecondCommonValues(currencyMap);
         // sprawdzanie dla kraju
+        // TODO to nie działa kraje muszą być w jakiś inny sposób szukane ;/.
+        // nie wiem jeszcze jak
         String[] commonsCountries = getMostAndSecondCommonValues(countryMap);
 
         Features features = new Features(articleLen,

@@ -40,9 +40,5 @@ public class KsrZad1 {
         System.out.println(articles.get(2));
         System.out.println(articles.get(3));
         System.out.println(articles.get(4));
-//        System.out.println(articles.get(80));
-//        System.out.println(articles.get(110));
-//        System.out.println(articles.get(160));
-//        System.out.println(articles.get(200));
     }
 }
