@@ -38,10 +38,10 @@ public class KsrZad1 {
         articles.forEach(Extractor::extractAndSetFeatures);
         print("Cechy dla każdego artykuły zostały wyekstrahowane");
 
-//        articles = articles.stream()
-//                .filter(article -> !article.getPlaces().get(0).equals("usa"))
-//                .limit(1_000)
-//                .collect(Collectors.toList());
+        articles = articles.stream()
+   //            .filter(article -> !article.getPlaces().get(0).equals("usa"))
+ //               .limit(40_000)
+                .collect(Collectors.toList());
 
         Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 7);
         List<ClassifiedArticle> out = classifier.classify();

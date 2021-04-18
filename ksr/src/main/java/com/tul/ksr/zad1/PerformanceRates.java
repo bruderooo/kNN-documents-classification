@@ -3,9 +3,11 @@ package com.tul.ksr.zad1;
 import com.tul.ksr.zad1.model.ClassifiedArticle;
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 public class PerformanceRates {
@@ -25,7 +27,7 @@ public class PerformanceRates {
                     [matrixMap.getOrDefault(classifiedArticle.getPredictedPlace(), 0)]
                     [matrixMap.getOrDefault(classifiedArticle.getArticle().getPlaces().get(0), 0)] += 1;
         }
-//        System.out.println(Arrays.stream(confusionMatrix).collect(Collectors.toList()));
+       System.out.println(Arrays.stream(confusionMatrix).collect(Collectors.toList()));
     }
 
     public double precision() {
@@ -36,7 +38,9 @@ public class PerformanceRates {
             for (int j = 0; j < 6; j++) {
                 rowSum += confusionMatrix[i][j];
             }
-            precisionSum += (confusionMatrix[i][i] / rowSum);
+            if(rowSum != 0) {
+                precisionSum += (confusionMatrix[i][i] / rowSum);
+            }
         }
         return (precisionSum / 6.0);
     }
@@ -49,7 +53,9 @@ public class PerformanceRates {
             for (int i = 0; i < 6; i++) {
                 columnSum += confusionMatrix[i][j];
             }
-            recallSum += (confusionMatrix[j][j] / columnSum);
+            if(columnSum != 0) {
+                recallSum += (confusionMatrix[j][j] / columnSum);
+            }
         }
         return (recallSum / 6.0);
     }
