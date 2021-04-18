@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 public class PerformanceRates {
     int[][] confusionMatrix = new int[6][6];
-    Map<String,Integer> matrixMap = new HashMap();
+    Map<String,Integer> matrixMap = new HashMap<>();
     PerformanceRates(List<ClassifiedArticle> articleArray) {
 
         matrixMap.put("west-germany", 0);
