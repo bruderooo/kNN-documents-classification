@@ -40,7 +40,7 @@ public class KsrZad1 {
 
 //        articles = articles.stream()
 //                .filter(article -> !article.getPlaces().get(0).equals("usa"))
-//                .limit(100_000)
+//                .limit(1_000)
 //                .collect(Collectors.toList());
 
         Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 7);
