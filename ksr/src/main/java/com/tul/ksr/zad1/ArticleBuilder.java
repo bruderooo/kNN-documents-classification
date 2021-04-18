@@ -5,6 +5,7 @@ import com.tul.ksr.zad1.model.Article;
 import java.util.List;
 
 public class ArticleBuilder {
+
     public static Article buildArticle(String reuter) {
         List<String> places = Extractor.extractPlaces(reuter);
 

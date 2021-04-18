@@ -13,6 +13,7 @@ import static com.tul.ksr.zad1.MapUtil.sortByValue;
 import static com.tul.ksr.zad1.StaticLists.*;
 
 public class Extractor {
+
     static List<String> extractPlaces(String reuter) {
         List<String> placesWithoutD = Arrays.asList(extractTextFromXmlTags(reuter, "PLACES").split("(?=(<D))"));
 

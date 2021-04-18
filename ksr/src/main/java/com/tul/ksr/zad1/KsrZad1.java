@@ -5,11 +5,11 @@ import com.tul.ksr.zad1.model.Article;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class KsrZad1 {
+
     public static void run() throws FileNotFoundException, ParseException {
         // Listowanie wszystkich plików
         List<String> allPaths = FileReader.listAllFilesInDirectory("ksr\\src\\main\\java\\com\\tul\\ksr\\zad1\\data\\articles");
@@ -21,24 +21,17 @@ public class KsrZad1 {
         List<Article> articles = FileReader.castStringsToArticles(reuters);
 
         // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
-        // a następnie dla tych co zostaną wyekstraktowac cechy.
-        List<Article> correctOnePlacesArticles = new ArrayList<>(articles);
-        for (Article article : articles) {
-            if (!Extractor.isNumberOfPlacesEqualA(article, 1)) {
-                correctOnePlacesArticles.remove(article);
-            } else if (!Extractor.isPlaceEqualPlacesFromList(article)) {
-                correctOnePlacesArticles.remove(article);
-            }
-        }
-
+        // a następnie dla tych co zostaną wyekstrahowac cechy.
         // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
-        articles = correctOnePlacesArticles;
+        articles = articles.stream()
+                .filter(article -> Extractor.isNumberOfPlacesEqualA(article, 1))
+                .filter(Extractor::isPlaceEqualPlacesFromList)
+                .collect(Collectors.toList());
 
         // Ekstrakcja cech
-        for (Article a : articles) {
-            Extractor.extractAndSetFeatures(a);
-        }
+        articles.forEach(Extractor::extractAndSetFeatures);
 
+        // To tutaj to tylko wyświetlanie dla mnie, do debuga :D
         List<Article> lista = articles.stream()
                 .filter(article -> article.getFeatures().getMostCommonCountry().equals("canada"))
                 .collect(Collectors.toList());
