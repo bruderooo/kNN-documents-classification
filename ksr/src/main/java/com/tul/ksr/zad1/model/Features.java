@@ -18,8 +18,8 @@ public class Features {
     public Features(int articleLength, int numberOfWords, String longestWord, int lengthOfLongestWord,
                     String mostCommonCurrency, String secondCommonCurrency, String mostCommonCountry,
                     String secondCommonCountry, double avgWordLength, int wordShortThanFive) {
-        this.articleLength = articleLength;
-        this.numberOfWords = numberOfWords;
+        this.articleLength = articleLength / 100;
+        this.numberOfWords = numberOfWords / 100;
         this.longestWord = longestWord;
         this.lengthOfLongestWord = lengthOfLongestWord;
         this.mostCommonCurrency = mostCommonCurrency;

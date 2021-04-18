@@ -2,6 +2,8 @@ package com.tul.ksr.zad1;
 
 
 import com.tul.ksr.zad1.model.Article;
+import com.tul.ksr.zad1.model.ClassifiedArticle;
+import com.tul.ksr.zad1.model.metrices.EuclideanMetric;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
@@ -17,8 +19,12 @@ public class KsrZad1 {
         // Wczytanie plików i zwrócenie ich jako lista podzielana na Reutersy
         List<String> reuters = FileReader.getAllRouters(allPaths);
 
+        print("Wszystkie pliki zostały wczytane oraz podzielone względem tagu REUTERS");
+
         // Zamiana listy Reutersów na Article
         List<Article> articles = FileReader.castStringsToArticles(reuters);
+
+        print("Pojedyncze artykuły zostały zamienione na obiekty typu Article");
 
         // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
         // a następnie dla tych co zostaną wyekstrahowac cechy.
@@ -30,14 +36,21 @@ public class KsrZad1 {
 
         // Ekstrakcja cech
         articles.forEach(Extractor::extractAndSetFeatures);
+        print("Cechy dla każdego artykuły zostały wyekstrahowane");
 
-        // To tutaj to tylko wyświetlanie dla mnie, do debuga :D
-        List<Article> lista = articles.stream()
-                .filter(article -> article.getFeatures().getMostCommonCountry().equals("canada"))
+        articles = articles.stream()
+                .limit(1000)
                 .collect(Collectors.toList());
 
-        System.out.println(lista.get(5));
-        System.out.println(lista.get(8));
-        System.out.println(lista.get(65));
+        Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 6);
+        List<ClassifiedArticle> out = classifier.classify();
+
+        System.out.println(out.stream()
+                .map(e -> e.getArticle().getPlaces().get(0) + " " + e.getPredictedPlace())
+                .collect(Collectors.toList()));
+    }
+
+    private static void print(String msg) {
+        System.out.println(msg);
     }
 }
