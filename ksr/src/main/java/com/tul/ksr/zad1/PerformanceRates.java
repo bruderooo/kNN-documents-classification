@@ -36,7 +36,7 @@ public class PerformanceRates {
             for(int j = 0; j < 6; j++) {
                 rowSum += confusionMatrix[i][j];
             }
-            precisionSum += (confusionMatrix[i][0] / (double)rowSum);
+            precisionSum += (confusionMatrix[i][i] / (double)rowSum);
         }
         return (precisionSum / 6.0);
     }
@@ -49,7 +49,7 @@ public class PerformanceRates {
             for(int i = 0; i < 6; i++) {
                 columnSum += confusionMatrix[i][j];
             }
-            recallSum += (confusionMatrix[0][j] / (double)columnSum);
+            recallSum += (confusionMatrix[j][j] / (double)columnSum);
         }
         return (recallSum / 6.0);
     }
