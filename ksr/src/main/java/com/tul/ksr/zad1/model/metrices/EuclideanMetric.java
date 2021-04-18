@@ -10,10 +10,10 @@ public class EuclideanMetric extends Metric {
         Features features1 = article1.getFeatures();
         Features features2 = article2.getFeatures();
 
-        return funXD(features1.getArticleLength() - features2.getArticleLength(),
-                features1.getNumberOfWords() - features2.getNumberOfWords(),
+        return fun((features1.getArticleLength() - features2.getArticleLength()),
+                (features1.getNumberOfWords() - features2.getNumberOfWords()),
                 levDiff(features1.getLongestWord(), features2.getLongestWord()),
-                features1.getLengthOfLongestWord() - features2.getLengthOfLongestWord(),
+                (features1.getLengthOfLongestWord() - features2.getLengthOfLongestWord()),
                 levDiff(features1.getMostCommonCurrency(), features2.getMostCommonCurrency()),
                 levDiff(features1.getSecondCommonCurrency(), features2.getSecondCommonCurrency()),
                 levDiff(features1.getMostCommonCountry(), features2.getMostCommonCountry()),
@@ -21,7 +21,7 @@ public class EuclideanMetric extends Metric {
                 features1.getWordShortThanFive() - features2.getWordShortThanFive());
     }
 
-    private double funXD(double... args) {
+    private double fun(double... args) {
         double tmp = 0;
 
         for (double element : args) {

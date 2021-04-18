@@ -12,13 +12,7 @@ public abstract class Metric {
     }
 
     private static int dist(char[] s1, char[] s2) {
-
-        // distance matrix - to memoize distances between substrings
-        // needed to avoid recursion
         int[][] d = new int[s1.length + 1][s2.length + 1];
-
-        // d[i][j] - would contain distance between such substrings:
-        // s1.subString(0, i) and s2.subString(0, j)
 
         for (int i = 0; i < s1.length + 1; i++) {
             d[i][0] = i;
@@ -41,18 +35,6 @@ public abstract class Metric {
         }
         return d[s1.length][s2.length];
     }
-
-//    double levDiff(String a, String b) {
-//        if (b.length() == 0) {
-//            return a.length();
-//        } else if (a.length() == 0) {
-//            return b.length();
-//        } else if (a.charAt(0) == b.charAt(0)) {
-//            return levDiff(tail(a), tail(b));
-//        } else {
-//            return 1 + min(levDiff(tail(a), b), levDiff(a, tail(b)), levDiff(tail(a), tail(b)));
-//        }
-//    }
 
     private double min(double a, double b, double c) {
         return Math.min(a, Math.min(b, c));

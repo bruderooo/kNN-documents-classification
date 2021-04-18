@@ -39,14 +39,15 @@ public class KsrZad1 {
         print("Cechy dla każdego artykuły zostały wyekstrahowane");
 
         articles = articles.stream()
+//                .filter(article -> !article.getPlaces().get(0).equals("usa"))
                 .limit(1000)
                 .collect(Collectors.toList());
 
-        Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 6);
+        Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 7);
         List<ClassifiedArticle> out = classifier.classify();
 
         System.out.println(out.stream()
-                .map(e -> e.getArticle().getPlaces().get(0) + " " + e.getPredictedPlace())
+                .map(e -> "\n" + e.getArticle().getPlaces().get(0) + " " + e.getPredictedPlace())
                 .collect(Collectors.toList()));
     }
 
