@@ -9,7 +9,7 @@ public class StaticLists {
     // Jak to zrobić żeby nie musieć sprawdzać i liczby pojedynczej i mnogiej?
     // już wiem i jest to nawet zaimplementowane xd
     static final List<String> CURRENCY_LIST = Arrays.asList(
-            "dlr", "franc", "pound", "cts", "ecu", "bpd", "crown", "kwacha", "stg", "mark", "guilder", "yen");
+            "dlr", "dollar", "franc", "pound", "stg", "sterling", "cts", "ecu", "bpd", "crown", "kwacha", "deutschemark", "mark", "guilder", "yen");
 
     static final List<String> COUNTRIES_LIST = Arrays.asList(
             "west-germany", "usa", "france", "uk", "canada", "japan");

@@ -38,17 +38,19 @@ public class KsrZad1 {
         articles.forEach(Extractor::extractAndSetFeatures);
         print("Cechy dla każdego artykuły zostały wyekstrahowane");
 
-        articles = articles.stream()
+//        articles = articles.stream()
 //                .filter(article -> !article.getPlaces().get(0).equals("usa"))
-                .limit(1000)
-                .collect(Collectors.toList());
+//                .limit(100_000)
+//                .collect(Collectors.toList());
 
         Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 7);
         List<ClassifiedArticle> out = classifier.classify();
 
-        System.out.println(out.stream()
-                .map(e -> "\n" + e.getArticle().getPlaces().get(0) + " " + e.getPredictedPlace())
-                .collect(Collectors.toList()));
+        PerformanceRates performanceRates = new PerformanceRates(out);
+        System.out.println(performanceRates.precision());
+        System.out.println(performanceRates.recall());
+        System.out.println(performanceRates.accuracy());
+        System.out.println(performanceRates.fOneRate());
     }
 
     private static void print(String msg) {
