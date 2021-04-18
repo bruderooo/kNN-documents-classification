@@ -10,8 +10,7 @@ import java.util.Map;
 
 import static com.tul.ksr.zad1.MapUtil.mapKeysFromList;
 import static com.tul.ksr.zad1.MapUtil.sortByValue;
-import static com.tul.ksr.zad1.StaticLists.COUNTRIES_LIST;
-import static com.tul.ksr.zad1.StaticLists.CURRENCY_LIST;
+import static com.tul.ksr.zad1.StaticLists.*;
 
 public class Extractor {
     static List<String> extractPlaces(String reuter) {
@@ -43,13 +42,13 @@ public class Extractor {
 
     private static String clearBodyText(String dirtyString) {
         return dirtyString
-                .replace("\r", " ").replace("\036", " ").replace("\025", " ")
+                .replace("\r", " ").replace("\036", " ")
                 .replace("\n", " ").replace("\t", " ")
                 .replace("&#2;", " ").replace("&#3;", " ")
                 .replace("&#5;", " ").replace("&#27;", " ")
                 .replace("&lt;", " ").replace("&gt;", " ")
                 .replace("<", " ").replace(">", " ")
-                .replace(",", " ").replace(".", " ")
+                .replace(",", " ").replace(".", "")
                 .replace(";", " ").replace(":", " ")
                 .replace("'", " ").replace("\"", " ")
                 .replace("(", " ").replace(")", " ")
@@ -110,8 +109,9 @@ public class Extractor {
             // Cecha 7: najczęściej występujący kraj
             // Cecha 8: drugi najczęściej występujący kraj
             // W tym miejscu zliczam wystąpienie wszystkich krajów
-            if (countryMap.containsKey(word)) {
-                countryMap.replace(word, countryMap.get(word) + 1);
+            if (COUNTRIES_MAP.containsKey(word)) {
+                String country = COUNTRIES_MAP.get(word);
+                countryMap.replace(country, countryMap.get(country) + 1);
             }
 
             // Cecha 9: średnia długość słów, tu sume długości liczymy
@@ -123,8 +123,6 @@ public class Extractor {
         // sprawdzanie dla waluty
         String[] commonsCurrencies = getMostAndSecondCommonValues(currencyMap);
         // sprawdzanie dla kraju
-        // TODO to nie działa kraje muszą być w jakiś inny sposób szukane ;/.
-        // nie wiem jeszcze jak
         String[] commonsCountries = getMostAndSecondCommonValues(countryMap);
 
         Features features = new Features(articleLen,
@@ -136,21 +134,44 @@ public class Extractor {
     }
 
     private static String[] getMostAndSecondCommonValues(Map<String, Integer> map) {
+        Map.Entry<String, Integer> next;
+        String mostCommonKey, secondCommonKey;
+        Integer checkInteger, checkSecondInteger;
+
         map = sortByValue(map);
         Iterator<Map.Entry<String, Integer>> entry = map.entrySet().iterator();
-        Map.Entry<String, Integer> next = entry.next();
-        String mostCommonKey = next.getKey();
-        Integer checkInteger = next.getValue();
-        String secondCommonKey = entry.next().getKey();
+
+        next = entry.next();
+        mostCommonKey = next.getKey();
+        checkInteger = next.getValue();
+
+        next = entry.next();
+        secondCommonKey = next.getKey();
+        checkSecondInteger = next.getValue();
 
         if (checkInteger == 0) {
             mostCommonKey = "";
+        }
+        if (checkSecondInteger == 0) {
             secondCommonKey = "";
         }
+
         return new String[]{mostCommonKey, secondCommonKey};
     }
 
     public static boolean isNumberOfPlacesEqualA(Article article, int A) {
         return article.getPlaces().size() == A;
     }
+
+    public static boolean isPlaceEqualPlacesFromList(Article article) {
+        String articlePlace = article.getPlaces().get(0);
+
+        for (String place : COUNTRIES_LIST) {
+            if (articlePlace.equals(place)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class KsrZad1 {
     public static void run() throws FileNotFoundException, ParseException {
@@ -21,24 +22,29 @@ public class KsrZad1 {
 
         // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
         // a następnie dla tych co zostaną wyekstraktowac cechy.
-        List<Article> onePlacesArticles = new ArrayList<>(articles);
+        List<Article> correctOnePlacesArticles = new ArrayList<>(articles);
         for (Article article : articles) {
             if (!Extractor.isNumberOfPlacesEqualA(article, 1)) {
-                onePlacesArticles.remove(article);
+                correctOnePlacesArticles.remove(article);
+            } else if (!Extractor.isPlaceEqualPlacesFromList(article)) {
+                correctOnePlacesArticles.remove(article);
             }
         }
 
         // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
-        articles = onePlacesArticles;
+        articles = correctOnePlacesArticles;
 
         // Ekstrakcja cech
         for (Article a : articles) {
             Extractor.extractAndSetFeatures(a);
         }
 
-        System.out.println(articles.get(1));
-        System.out.println(articles.get(2));
-        System.out.println(articles.get(3));
-        System.out.println(articles.get(4));
+        List<Article> lista = articles.stream()
+                .filter(article -> article.getFeatures().getMostCommonCountry().equals("canada"))
+                .collect(Collectors.toList());
+
+        System.out.println(lista.get(5));
+        System.out.println(lista.get(8));
+        System.out.println(lista.get(65));
     }
 }
