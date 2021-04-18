@@ -43,6 +43,7 @@ public class Extractor {
 
     private static String clearBodyText(String dirtyString) {
         return dirtyString
+                .replace("\r", " ").replace("\036", " ").replace("\025", " ")
                 .replace("\n", " ").replace("\t", " ")
                 .replace("&#2;", " ").replace("&#3;", " ")
                 .replace("&#5;", " ").replace("&#27;", " ")

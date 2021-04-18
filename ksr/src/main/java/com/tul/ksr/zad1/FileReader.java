@@ -63,6 +63,7 @@ public class FileReader {
         Scanner myReader = new Scanner(file);
 
         while (myReader.hasNextLine()) {
+            data.append(" ");
             data.append(myReader.nextLine());
         }
 
