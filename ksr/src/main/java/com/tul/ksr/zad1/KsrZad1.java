@@ -7,6 +7,8 @@ import com.tul.ksr.zad1.model.metrices.EuclideanMetric;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +37,14 @@ public class KsrZad1 {
                 .collect(Collectors.toList());
 
         // Ekstrakcja cech
-        articles.forEach(Extractor::extractAndSetFeatures);
+        List<Integer> finalFeaturesRange = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        articles.forEach((article) -> Extractor.extractAndSetFeatures(article, finalFeaturesRange));
         print("Cechy dla każdego artykuły zostały wyekstrahowane");
 
-        articles = articles.stream()
-   //            .filter(article -> !article.getPlaces().get(0).equals("usa"))
- //               .limit(40_000)
-                .collect(Collectors.toList());
+//        articles = articles.stream()
+//   //            .filter(article -> !article.getPlaces().get(0).equals("usa"))
+// //               .limit(40_000)
+//                .collect(Collectors.toList());
 
         Classifier classifier = new Classifier(articles, 60, 40, new EuclideanMetric(), 7);
         List<ClassifiedArticle> out = classifier.classify();

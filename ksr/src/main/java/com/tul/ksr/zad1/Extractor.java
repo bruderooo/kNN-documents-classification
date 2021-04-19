@@ -3,10 +3,7 @@ package com.tul.ksr.zad1;
 import com.tul.ksr.zad1.model.Article;
 import com.tul.ksr.zad1.model.Features;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.tul.ksr.zad1.MapUtil.mapKeysFromList;
 import static com.tul.ksr.zad1.MapUtil.sortByValue;
@@ -61,7 +58,7 @@ public class Extractor {
                 .replace("!", " ").toLowerCase();
     }
 
-    public static void extractAndSetFeatures(Article article) {
+    public static void extractAndSetFeatures(Article article, List<Integer> whichFeatures) {
         // Słownik z kluczami jako kraje, i wartościami równymi zero
         // które to są placeholderami dla konkretnych występowań danych kluczów
         Map<String, Integer> currencyMap = mapKeysFromList(CURRENCY_LIST);
@@ -131,6 +128,8 @@ public class Extractor {
                 commonsCurrencies[1], commonsCountries[0], commonsCountries[1],
                 sumLen / noWords, numberOfShortWords);
 
+        features = correctFeatures(features, whichFeatures);
+
         article.setFeatures(features);
     }
 
@@ -175,4 +174,15 @@ public class Extractor {
         return false;
     }
 
+    public static Features correctFeatures(Features features, List<Integer> whichFeatures) {
+        List<Integer> range1to10 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+
+        Features tmpFeatures = new Features(features);
+        for (int featureNumber : whichFeatures) {
+            if (!range1to10.contains(featureNumber)) {
+                tmpFeatures.clearFeature(featureNumber);
+            }
+        }
+        return tmpFeatures;
+    }
 }
