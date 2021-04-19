@@ -5,7 +5,12 @@ import com.tul.ksr.zad1.model.ClassifiedArticle;
 import com.tul.ksr.zad1.model.KnnResult;
 import com.tul.ksr.zad1.model.metrices.Metric;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
+import static com.tul.ksr.zad1.MapUtil.predictedPlace;
 
 public class Classifier {
     private final List<Article> articles;
@@ -53,24 +58,5 @@ public class Classifier {
         return classifiedArticles;
     }
 
-    public Map.Entry<String, Integer> predictedPlace(List<KnnResult> knnResults) {
-        Map<String, Integer> map = new HashMap<>();
-        for (KnnResult knnResult : knnResults) {
 
-            if (!map.containsKey(knnResult.getTruePlace())) {
-                map.put(knnResult.getTruePlace(), 1);
-            } else {
-                int count = map.get(knnResult.getTruePlace());
-                map.put(knnResult.getTruePlace(), count + 1);
-            }
-        }
-        Map.Entry<String, Integer> maxEntry = null;
-
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
-        }
-        return maxEntry;
-    }
 }

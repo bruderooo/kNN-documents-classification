@@ -5,8 +5,7 @@ import com.tul.ksr.zad1.model.Features;
 
 import java.util.*;
 
-import static com.tul.ksr.zad1.MapUtil.mapKeysFromList;
-import static com.tul.ksr.zad1.MapUtil.sortByValue;
+import static com.tul.ksr.zad1.MapUtil.*;
 import static com.tul.ksr.zad1.StaticLists.*;
 
 public class Extractor {
@@ -150,10 +149,14 @@ public class Extractor {
         checkSecondInteger = next.getValue();
 
         if (checkInteger == 0) {
-            mostCommonKey = "";
+            mostCommonKey = getRandomMapKeyValueElement(map);
         }
         if (checkSecondInteger == 0) {
-            secondCommonKey = "";
+            secondCommonKey = getRandomMapKeyValueElement(map);
+
+            while (secondCommonKey.equals(mostCommonKey)) {
+                secondCommonKey = getRandomMapKeyValueElement(map);
+            }
         }
 
         return new String[]{mostCommonKey, secondCommonKey};

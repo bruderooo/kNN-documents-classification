@@ -1,5 +1,7 @@
 package com.tul.ksr.zad1;
 
+import com.tul.ksr.zad1.model.KnnResult;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -25,5 +27,39 @@ public class MapUtil {
         }
 
         return map;
+    }
+
+    public static Map.Entry<String, Integer> predictedPlace(List<KnnResult> knnResults) {
+        Map<String, Integer> map = new HashMap<>();
+        for (KnnResult knnResult : knnResults) {
+
+            if (!map.containsKey(knnResult.getTruePlace())) {
+                map.put(knnResult.getTruePlace(), 1);
+            } else {
+                int count = map.get(knnResult.getTruePlace());
+                map.put(knnResult.getTruePlace(), count + 1);
+            }
+        }
+        Map.Entry<String, Integer> maxEntry = null;
+
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+                maxEntry = entry;
+            }
+        }
+        return maxEntry;
+    }
+
+    public static String getRandomMapKeyValueElement(Map<String, Integer> map) {
+        Set<String> keySet = map.keySet();
+        List<String> keyList = new ArrayList<>(keySet);
+
+        int size = keyList.size();
+        int randIdx = new Random().nextInt(size);
+
+        String randomKey = keyList.get(randIdx);
+        Integer randomValue = map.get(randomKey);
+
+        return randomKey;
     }
 }
