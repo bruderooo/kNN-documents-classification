@@ -1,7 +1,19 @@
 package com.tul.ksr.zad1;
 
+import com.tul.ksr.zad1.model.Article;
+import com.tul.ksr.zad1.model.ClassifiedArticle;
+import com.tul.ksr.zad1.model.metrices.ChebyshevMetric;
+import com.tul.ksr.zad1.model.metrices.EuclideanMetric;
+import com.tul.ksr.zad1.model.metrices.Metric;
+import com.tul.ksr.zad1.model.metrices.TaxicabMetric;
+
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,7 +53,6 @@ public class MenuZadFirst {
                 "8. drugi najczęściej występujący kraj\n" +
                 "9. średnia  długość  słowa  w  artykule\n" +
                 "10. liczba słów krótszych niż średnia długość słowa w tekście w ję-zyku  angielskim\n" +
-                "11. liczba słów dłuższych niż średnia długość słowa w tekście w ję-zyku angielskim.\n" +
                 "Można podawać pojedyńcze cechy, oraz odzielać je przecinkami (np. 1,3,4,6-10)\n" +
                 "Wybór: ");
         String[] features = input.next().split(",");
@@ -68,5 +79,80 @@ public class MenuZadFirst {
                 "3. Metryka Czebyszewa.\n" +
                 "Wybór: ");
         int metric = input.nextInt();
+        Metric metrica = getMetric(metric);
+
+        // Listowanie wszystkich plików
+        List<String> allPaths = FileReader.listAllFilesInDirectory("ksr\\src\\main\\java\\com\\tul\\ksr\\zad1\\data\\articles");
+
+        // Wczytanie plików i zwrócenie ich jako lista podzielana na Reutersy
+        List<String> reuters = FileReader.getAllRouters(allPaths);
+
+        // Zamiana listy Reutersów na Article
+        List<Article> articles = FileReader.castStringsToArticles(reuters);
+
+        // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
+        // a następnie dla tych co zostaną wyekstrahowac cechy.
+        // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
+        articles = articles.stream()
+                .filter(article -> Extractor.isNumberOfPlacesEqualA(article, 1))
+                .filter(Extractor::isPlaceEqualPlacesFromList)
+                .collect(Collectors.toList());
+
+        // Ekstrakcja cech
+        List<Integer> finalFeaturesRange = range;
+        articles.forEach((article) -> Extractor.extractAndSetFeatures(article, finalFeaturesRange));
+
+        Classifier classifier = new Classifier(articles, trainProportion, testProportion, metrica, k);
+        List<ClassifiedArticle> out = classifier.classify();
+
+        PerformanceRates performanceRates = new PerformanceRates(out);
+        double p, c, d, f1;
+        p = performanceRates.precision();
+        c = performanceRates.recall();
+        d = performanceRates.accuracy();
+        f1 = performanceRates.fOneRate();
+
+        System.out.println("Precyzja: " + p);
+        System.out.println("Czułość: " + c);
+        System.out.println("Dokładność: " + d);
+        System.out.println("Miara F1: " + f1);
+
+        saveToFile(metric, finalFeaturesRange, trainProportion, testProportion, k, p, c, d, f1);
+    }
+
+    private static void saveToFile(int metricName, List<Integer> features, double train, double test, int k, double p, double c, double d, double f1) {
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm_ss");
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println(dtf.format(now));
+            File file = new File("G:\\ksr_wyniki\\" + dtf.format(now) + ".txt");
+            FileWriter myWriter = new FileWriter(file.getName());
+            myWriter.write("k: : " + k);
+            myWriter.write("\nProporcja zbiór uczący/testowy: : " + train + "/" + test);
+            myWriter.write("\nMetric: " + metricName);
+            myWriter.write("\nFeatures: " + features);
+            myWriter.write("\nPrecyzja: " + p);
+            myWriter.write("\nCzułość: " + c);
+            myWriter.write("\nDokładność: " + d);
+            myWriter.write("\nMiara F1: " + f1);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    private static Metric getMetric(int index) {
+        switch (index) {
+            case 1:
+                return new EuclideanMetric();
+            case 2:
+                return new TaxicabMetric();
+            case 3:
+                return new ChebyshevMetric();
+            default:
+                throw new IllegalStateException("Unexpected value: " + index);
+        }
     }
 }

@@ -3,11 +3,9 @@ package com.tul.ksr.zad1;
 import com.tul.ksr.zad1.model.ClassifiedArticle;
 import lombok.Data;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 public class PerformanceRates {
@@ -27,7 +25,6 @@ public class PerformanceRates {
                     [matrixMap.getOrDefault(classifiedArticle.getPredictedPlace(), 0)]
                     [matrixMap.getOrDefault(classifiedArticle.getArticle().getPlaces().get(0), 0)] += 1;
         }
-       System.out.println(Arrays.stream(confusionMatrix).collect(Collectors.toList()));
     }
 
     public double precision() {

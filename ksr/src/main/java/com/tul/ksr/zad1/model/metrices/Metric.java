@@ -35,13 +35,5 @@ public abstract class Metric {
         }
         return d[s1.length][s2.length];
     }
-
-    private double min(double a, double b, double c) {
-        return Math.min(a, Math.min(b, c));
-    }
-
-    private String tail(String a) {
-        return a.substring(1);
-    }
 }
 
