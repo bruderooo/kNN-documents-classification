@@ -28,8 +28,8 @@ public class Classifier {
 
         for (int testIndex = trainingSize; testIndex < articles.size(); testIndex++) {
             List<KnnResult> allResults = new ArrayList<>();
-            for (int trainingIndex = 0; trainingIndex < trainingSize; trainingIndex++) {
 
+            for (int trainingIndex = 0; trainingIndex < trainingSize; trainingIndex++) {
                 double distance = metric.distanceTo(articles.get(trainingIndex), articles.get(testIndex));
                 String places = articles.get(trainingIndex).getPlaces().get(0);
 
@@ -55,8 +55,8 @@ public class Classifier {
 
     public Map.Entry<String, Integer> predictedPlace(List<KnnResult> knnResults) {
         Map<String, Integer> map = new HashMap<>();
-        for (KnnResult knnResult : knnResults) {
 
+        for (KnnResult knnResult : knnResults) {
             if (!map.containsKey(knnResult.getTruePlace())) {
                 map.put(knnResult.getTruePlace(), 1);
             } else {

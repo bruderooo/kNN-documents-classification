@@ -3,7 +3,10 @@ package com.tul.ksr.zad1;
 import com.tul.ksr.zad1.model.Article;
 import com.tul.ksr.zad1.model.Features;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.tul.ksr.zad1.MapUtil.mapKeysFromList;
 import static com.tul.ksr.zad1.MapUtil.sortByValue;
@@ -133,7 +136,7 @@ public class Extractor {
         article.setFeatures(features);
     }
 
-    private static String[] getMostAndSecondCommonValues(Map<String, Integer> map) {
+    public static String[] getMostAndSecondCommonValues(Map<String, Integer> map) {
         Map.Entry<String, Integer> next;
         String mostCommonKey, secondCommonKey;
         Integer checkInteger, checkSecondInteger;
@@ -175,12 +178,12 @@ public class Extractor {
     }
 
     public static Features correctFeatures(Features features, List<Integer> whichFeatures) {
-        List<Integer> range1to10 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-
         Features tmpFeatures = new Features(features);
-        for (int featureNumber : whichFeatures) {
-            if (!range1to10.contains(featureNumber)) {
-                tmpFeatures.clearFeature(featureNumber);
+        for (int i = 0; i < 11; i++) {
+            if (whichFeatures.contains(i)) {
+
+            } else {
+                tmpFeatures.clearFeature(i);
             }
         }
         return tmpFeatures;

@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StaticLists {
-    // Jak to zrobić żeby nie musieć sprawdzać i liczby pojedynczej i mnogiej?
-    // już wiem i jest to nawet zaimplementowane xd
+
     static final List<String> CURRENCY_LIST = Arrays.asList(
             "dlr", "dollar", "franc", "pound", "stg", "sterling", "cts", "ecu", "bpd", "crown", "kwacha", "deutschemark", "mark", "guilder", "yen");
 

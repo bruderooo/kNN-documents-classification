@@ -3,9 +3,7 @@ package com.tul.ksr.zad1.model.metrices;
 import com.tul.ksr.zad1.model.Article;
 
 public abstract class Metric {
-    public double distanceTo(Article article1, Article article2) {
-        return 0;
-    }
+    public abstract double distanceTo(Article article1, Article article2);
 
     public static int levDiff(String s1, String s2) {
         return dist(s1.toCharArray(), s2.toCharArray());

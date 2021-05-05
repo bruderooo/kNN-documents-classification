@@ -4,6 +4,7 @@ import com.tul.ksr.zad1.model.Article;
 import com.tul.ksr.zad1.model.Features;
 
 public class EuclideanMetric extends Metric {
+
     @Override
     public double distanceTo(Article article1, Article article2) {
         Features features1 = article1.getFeatures();

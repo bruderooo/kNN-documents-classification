@@ -50,11 +50,19 @@ public class PerformanceRates {
             for (int i = 0; i < 6; i++) {
                 columnSum += confusionMatrix[i][j];
             }
-            if(columnSum != 0) {
+            if (columnSum != 0) {
                 recallSum += (confusionMatrix[j][j] / columnSum);
             }
         }
         return (recallSum / 6.0);
+    }
+
+    public double avgAccuracy(int countries) {
+        double sumOfAccuracy = 0.0;
+        for (int i = 0; i < countries; i++) {
+            sumOfAccuracy += accuracy(i);
+        }
+        return sumOfAccuracy / countries;
     }
 
     public double accuracy(int country) {
@@ -63,7 +71,7 @@ public class PerformanceRates {
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if ((i == country || j == country) && ( i != j) ) {
+                if ((i == country || j == country) && (i != j)) {
                     countNegative += confusionMatrix[i][j];
                 }
                 countAll += confusionMatrix[i][j];
@@ -72,18 +80,10 @@ public class PerformanceRates {
         double positive = countAll - countNegative;
         return positive / countAll;
     }
-    public double avgAccuracy(int countries) {
-        double sumOfAccuracy = 0.0;
-        for (int i = 0; i < countries; i++){
-            sumOfAccuracy += accuracy(i);
-        }
-        return sumOfAccuracy / countries;
 
-    }
     public double fOneRate() {
         double precision = precision();
         double recall = recall();
-        return ((2 * precision * recall) / (precision + recall));
+        return (2 * precision * recall) / (precision + recall);
     }
 }
-

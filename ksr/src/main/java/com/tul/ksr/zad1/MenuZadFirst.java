@@ -109,15 +109,15 @@ public class MenuZadFirst {
         double p, c, d, f1;
         p = performanceRates.precision();
         c = performanceRates.recall();
-        d = performanceRates.accuracy();
+        d = performanceRates.avgAccuracy(6);
         f1 = performanceRates.fOneRate();
 
-        System.out.println("Precyzja: " + p);
-        System.out.println("Czułość: " + c);
-        System.out.println("Dokładność: " + d);
-        System.out.println("Miara F1: " + f1);
+        System.out.println("Precision: " + p);
+        System.out.println("Recall: " + c);
+        System.out.println("Average Accuracy: " + d);
+        System.out.println("F1: " + f1);
 
-        saveToFile(metric, finalFeaturesRange, trainProportion, testProportion, k, p, c, d, f1);
+        saveToFile(metric, range, trainProportion, testProportion, k, p, c, d, f1);
     }
 
     private static void saveToFile(int metricName, List<Integer> features, double train, double test, int k, double p, double c, double d, double f1) {
@@ -127,7 +127,7 @@ public class MenuZadFirst {
             System.out.println(dtf.format(now));
             File file = new File("G:\\ksr_wyniki\\" + dtf.format(now) + ".txt");
             FileWriter myWriter = new FileWriter(file.getName());
-            myWriter.write("k: : " + k);
+            myWriter.write("k: " + k);
             myWriter.write("\nProporcja zbiór uczący/testowy: : " + train + "/" + test);
             myWriter.write("\nMetric: " + metricName);
             myWriter.write("\nFeatures: " + features);
