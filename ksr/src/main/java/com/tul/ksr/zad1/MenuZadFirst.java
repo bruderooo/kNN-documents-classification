@@ -109,12 +109,12 @@ public class MenuZadFirst {
         double p, c, d, f1;
         p = performanceRates.precision();
         c = performanceRates.recall();
-        d = performanceRates.avgAccuracy(6);
+        d = performanceRates.accuracy();
         f1 = performanceRates.fOneRate();
 
         System.out.println("Precision: " + p);
         System.out.println("Recall: " + c);
-        System.out.println("Average Accuracy: " + d);
+        System.out.println("Accuracy: " + d);
         System.out.println("F1: " + f1);
 
         saveToFile(metric, range, trainProportion, testProportion, k, p, c, d, f1);

@@ -57,28 +57,19 @@ public class PerformanceRates {
         return (recallSum / 6.0);
     }
 
-    public double avgAccuracy(int countries) {
-        double sumOfAccuracy = 0.0;
-        for (int i = 0; i < countries; i++) {
-            sumOfAccuracy += accuracy(i);
-        }
-        return sumOfAccuracy / countries;
-    }
-
-    public double accuracy(int country) {
-        double countNegative = 0.0;
+    public double accuracy() {
+        double countPositive = 0.0;
         double countAll = 0.0;
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if ((i == country || j == country) && (i != j)) {
-                    countNegative += confusionMatrix[i][j];
+                if (i == j) {
+                    countPositive += confusionMatrix[i][j];
                 }
                 countAll += confusionMatrix[i][j];
             }
         }
-        double positive = countAll - countNegative;
-        return positive / countAll;
+        return countPositive / countAll;
     }
 
     public double fOneRate() {
