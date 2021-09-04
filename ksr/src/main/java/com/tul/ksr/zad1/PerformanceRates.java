@@ -35,7 +35,7 @@ public class PerformanceRates {
             for (int j = 0; j < 6; j++) {
                 rowSum += confusionMatrix[i][j];
             }
-            if(rowSum != 0) {
+            if (rowSum != 0) {
                 precisionSum += (confusionMatrix[i][i] / rowSum);
             }
         }
@@ -76,5 +76,19 @@ public class PerformanceRates {
         double precision = precision();
         double recall = recall();
         return (2 * precision * recall) / (precision + recall);
+    }
+
+    public String showMatrix() {
+        StringBuilder text = new StringBuilder();
+        text.append(";;Rzeczywiste;;;;;;\n");
+        text.append(";;west-germany;usa;france;uk;canada;japan;\n");
+        for (double[] row : confusionMatrix) {
+            text.append(";;");
+            for (double element : row) {
+                text.append((int) element).append(";");
+            }
+            text.append("\n");
+        }
+        return text.toString();
     }
 }

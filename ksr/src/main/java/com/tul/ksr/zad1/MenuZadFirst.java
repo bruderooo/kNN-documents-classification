@@ -7,10 +7,7 @@ import com.tul.ksr.zad1.model.metrices.EuclideanMetric;
 import com.tul.ksr.zad1.model.metrices.Metric;
 import com.tul.ksr.zad1.model.metrices.TaxicabMetric;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +18,51 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MenuZadFirst {
+    public static void run(int k, int trainProportion, int testProportion, List<Integer> features, int metric) throws FileNotFoundException, ParseException {
+        Metric metrica = getMetric(metric);
+
+        // Listowanie wszystkich plików
+        List<String> allPaths = FileReader.listAllFilesInDirectory("ksr\\src\\main\\java\\com\\tul\\ksr\\zad1\\data\\articles");
+
+        // Wczytanie plików i zwrócenie ich jako lista podzielana na Reutersy
+        List<String> reuters = FileReader.getAllRouters(allPaths);
+
+        // Zamiana listy Reutersów na Article
+        List<Article> articles = FileReader.castStringsToArticles(reuters);
+
+        // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
+        // a następnie dla tych co zostaną wyekstrahowac cechy.
+        // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
+        articles = articles.stream()
+                .filter(article -> Extractor.isNumberOfPlacesEqualA(article, 1))
+                .filter(Extractor::isPlaceEqualPlacesFromList)
+                .collect(Collectors.toList());
+
+        // Ekstrakcja cech
+        articles.forEach((article) -> Extractor.extractAndSetFeatures(article, features));
+
+        Classifier classifier = new Classifier(articles, trainProportion, testProportion, metrica, k);
+        List<ClassifiedArticle> out = classifier.classify();
+
+        PerformanceRates performanceRates = new PerformanceRates(out);
+        double p, c, d, f1;
+        p = performanceRates.precision();
+        c = performanceRates.recall();
+        d = performanceRates.accuracy();
+        f1 = performanceRates.fOneRate();
+
+        System.out.println("Precision: " + p);
+        System.out.println("Recall: " + c);
+        System.out.println("Accuracy: " + d);
+        System.out.println("F1: " + f1);
+
+        saveToFile(metric, features, trainProportion, testProportion, k, p, c, d, f1);
+
+        PrintWriter printer = new PrintWriter("matrix.csv");
+        printer.println(performanceRates.showMatrix());
+        printer.close();
+    }
+
     public static void run() throws FileNotFoundException, ParseException {
         Scanner input = new Scanner(System.in);
 
@@ -79,45 +121,8 @@ public class MenuZadFirst {
                 "3. Metryka Czebyszewa.\n" +
                 "Wybór: ");
         int metric = input.nextInt();
-        Metric metrica = getMetric(metric);
 
-        // Listowanie wszystkich plików
-        List<String> allPaths = FileReader.listAllFilesInDirectory("ksr\\src\\main\\java\\com\\tul\\ksr\\zad1\\data\\articles");
-
-        // Wczytanie plików i zwrócenie ich jako lista podzielana na Reutersy
-        List<String> reuters = FileReader.getAllRouters(allPaths);
-
-        // Zamiana listy Reutersów na Article
-        List<Article> articles = FileReader.castStringsToArticles(reuters);
-
-        // Teraz potrzeba ograniczyć ilość Article do tych co mają dokładnie jedno Places
-        // a następnie dla tych co zostaną wyekstrahowac cechy.
-        // Teraz pod article mamy wyłącznie te artykuły które mają dokładnie jeden places
-        articles = articles.stream()
-                .filter(article -> Extractor.isNumberOfPlacesEqualA(article, 1))
-                .filter(Extractor::isPlaceEqualPlacesFromList)
-                .collect(Collectors.toList());
-
-        // Ekstrakcja cech
-        List<Integer> finalFeaturesRange = range;
-        articles.forEach((article) -> Extractor.extractAndSetFeatures(article, finalFeaturesRange));
-
-        Classifier classifier = new Classifier(articles, trainProportion, testProportion, metrica, k);
-        List<ClassifiedArticle> out = classifier.classify();
-
-        PerformanceRates performanceRates = new PerformanceRates(out);
-        double p, c, d, f1;
-        p = performanceRates.precision();
-        c = performanceRates.recall();
-        d = performanceRates.accuracy();
-        f1 = performanceRates.fOneRate();
-
-        System.out.println("Precision: " + p);
-        System.out.println("Recall: " + c);
-        System.out.println("Accuracy: " + d);
-        System.out.println("F1: " + f1);
-
-        saveToFile(metric, range, trainProportion, testProportion, k, p, c, d, f1);
+        run(k, trainProportion, testProportion, range, metric);
     }
 
     private static void saveToFile(int metricName, List<Integer> features, double train, double test, int k, double p, double c, double d, double f1) {
@@ -143,7 +148,7 @@ public class MenuZadFirst {
         }
     }
 
-    private static Metric getMetric(int index) {
+    public static Metric getMetric(int index) {
         switch (index) {
             case 1:
                 return new EuclideanMetric();
