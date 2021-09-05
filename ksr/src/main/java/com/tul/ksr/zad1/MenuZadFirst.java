@@ -7,10 +7,8 @@ import com.tul.ksr.zad1.model.metrices.EuclideanMetric;
 import com.tul.ksr.zad1.model.metrices.Metric;
 import com.tul.ksr.zad1.model.metrices.TaxicabMetric;
 
-import java.io.*;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -55,12 +53,6 @@ public class MenuZadFirst {
         System.out.println("Recall: " + c);
         System.out.println("Accuracy: " + d);
         System.out.println("F1: " + f1);
-
-        saveToFile(metric, features, trainProportion, testProportion, k, p, c, d, f1);
-
-        PrintWriter printer = new PrintWriter("matrix.csv");
-        printer.println(performanceRates.showMatrix());
-        printer.close();
     }
 
     public static void run() throws FileNotFoundException, ParseException {
@@ -123,29 +115,6 @@ public class MenuZadFirst {
         int metric = input.nextInt();
 
         run(k, trainProportion, testProportion, range, metric);
-    }
-
-    private static void saveToFile(int metricName, List<Integer> features, double train, double test, int k, double p, double c, double d, double f1) {
-        try {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm_ss");
-            LocalDateTime now = LocalDateTime.now();
-            System.out.println(dtf.format(now));
-            File file = new File("G:\\ksr_wyniki\\" + dtf.format(now) + ".txt");
-            FileWriter myWriter = new FileWriter(file.getName());
-            myWriter.write("k: " + k);
-            myWriter.write("\nProporcja zbiór uczący/testowy: : " + train + "/" + test);
-            myWriter.write("\nMetric: " + metricName);
-            myWriter.write("\nFeatures: " + features);
-            myWriter.write("\nPrecyzja: " + p);
-            myWriter.write("\nCzułość: " + c);
-            myWriter.write("\nDokładność: " + d);
-            myWriter.write("\nMiara F1: " + f1);
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
     }
 
     public static Metric getMetric(int index) {
