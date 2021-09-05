@@ -96,7 +96,7 @@
                             <manifest>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
-                                <mainClass>com.tul.ksr.App</mainClass>
+                                <mainClass>com.tul.ksr.Main</mainClass>
                             </manifest>
                         </archive>
                     </configuration>
